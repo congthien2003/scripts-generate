@@ -1,8 +1,8 @@
-# ReactJS Admin Dashboard
+# Script Generator Web App
 
 ## 📋 Tổng quan dự án
 
-Đây là một ứng dụng Admin Dashboard được xây dựng bằng React 19, TypeScript và Vite. Dự án sử dụng kiến trúc component-based với các tính năng quản lý người dùng và vai trò (roles).
+Ứng dụng web generator cho phép tạo scripts/templates tự động theo các mẫu có sẵn. Được xây dựng bằng React 19, TypeScript, Vite với Shadcn UI components.
 
 ## 🚀 Công nghệ sử dụng
 
@@ -11,109 +11,105 @@
 - **React 19** - UI Framework
 - **TypeScript** - Type safety
 - **Vite** - Build tool và dev server
-- **React Router DOM** - Client-side routing
+- **React Router DOM 7** - Client-side routing
 
 ### UI & Styling
 
-- **Tailwind CSS** - Utility-first CSS framework
+- **Tailwind CSS 4** - Utility-first CSS framework
 - **Radix UI** - Headless UI components
+- **Shadcn UI** - Pre-built components
 - **Lucide React** - Icon library
 - **React Hot Toast** - Toast notifications
 
 ### Form & Validation
 
-- **React Hook Form** - Form management
-- **Zod** - Schema validation
+- **React Hook Form 7** - Form management
+- **Zod 4** - Schema validation
 - **@hookform/resolvers** - Form validation integration
 
-### State Management & API
+### State Management
 
-- **Zustand** - Lightweight state management
-- **Axios** - HTTP client
-- **React Context** - Authentication state
+- **Redux Toolkit** - Global state management
+- **React Redux** - Redux integration
 
 ### Development Tools
 
 - **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **Husky** - Git hooks
-- **TypeScript ESLint** - TypeScript linting
+- **TypeScript** - Type checking
 
 ## 📁 Cấu trúc dự án
 
 ```
 src/
-├── components/           # Reusable UI components
-│   ├── layout/          # Layout components (AdminLayout, Sidebar)
-│   └── ui/              # Base UI components (Button, Dialog, Table, etc.)
-├── features/            # Feature-based modules
-│   ├── users/           # User management feature
-│   │   ├── components/  # User-specific components
-│   │   ├── hooks/       # Custom hooks for user operations
-│   │   └── schema/      # Validation schemas
-│   └── roles/           # Role management feature
-│       ├── components/  # Role-specific components
-│       ├── hooks/       # Custom hooks for role operations
-│       └── schema/      # Validation schemas
-├── models/              # TypeScript type definitions
-│   ├── auth/            # Authentication types
-│   ├── user/            # User-related types
-│   ├── role/            # Role-related types
-│   └── common/          # Shared types
+├── features/               # Feature-based modules
+│   ├── sql/               # SQL Generators
+│   │   ├── notification/  # Notification SQL Generator
+│   │   ├── merchant/      # Merchant SQL Generator (Coming Soon)
+│   │   └── configuration/ # Configuration SQL Generator (Coming Soon)
+│   ├── text/              # Text Generators (Coming Soon)
+│   │   ├── email/         # Email Template Generator
+│   │   └── message/       # Message Template Generator
+│   └── migration/         # Migration Generators (Coming Soon)
+│       ├── dotnet/        # .NET Migration Generator
+│       └── database/      # Database Migration Generator
+├── shared/                # Shared resources
+│   ├── components/        # Reusable components
+│   │   ├── CodePreview.tsx      # Code preview with copy/download
+│   │   ├── ScriptLayout.tsx     # Main layout
+│   │   ├── ScriptSidebar.tsx    # Navigation sidebar
+│   │   └── ActionButtons.tsx    # Action buttons
+│   ├── lib/              # Utility libraries
+│   │   └── template-engine.ts   # Template engine
+│   └── types/            # Shared TypeScript types
+│       └── index.ts
+├── components/           # UI components (Shadcn)
+│   └── ui/              # Base UI components
 ├── pages/               # Page components
-│   ├── users/           # User management page
-│   ├── roles/           # Role management page
 │   └── error/           # Error page
-├── providers/           # Context providers
-│   └── authProvider/    # Authentication context
-├── services/            # API service classes
-│   ├── userService.ts   # User API operations
-│   ├── roleService.ts   # Role API operations
-│   └── authService.ts   # Authentication API
-├── lib/                 # Utility libraries
-│   ├── api.ts          # API client wrapper
-│   ├── axios.ts        # Axios configuration
-│   └── utils.ts        # Helper functions
 ├── router/              # Routing configuration
-└── stores/              # Global state stores
+│   └── index.tsx
+├── stores/              # Redux stores
+│   └── loading/         # Loading state
+├── lib/                 # Utility functions
+│   ├── utils.ts        # Helper utilities
+│   ├── format.ts       # Format utilities
+│   └── toast.ts        # Toast notifications
+└── App.tsx             # Root component
 ```
 
 ## 🏗️ Kiến trúc dự án
 
-### 1. Feature-Based Architecture
+### Feature-Based Architecture
 
-Dự án được tổ chức theo từng feature (users, roles) với mỗi feature có:
+Mỗi generator là một feature độc lập với:
 
-- **Components**: UI components riêng cho feature
-- **Hooks**: Custom hooks để quản lý state và logic
-- **Schema**: Validation schemas cho forms
-- **Utils**: Utility functions (nếu cần)
+- **Generator Component**: UI form để nhập dữ liệu
+- **Schema**: Zod validation schema cho form
+- **Templates**: Template strings với placeholders
+- **Service**: Logic xử lý và generate code
 
-### 2. Layered Architecture
+### Template Engine
 
+Template engine đơn giản sử dụng placeholder replacement:
+
+```typescript
+// Template với placeholders
+const template = 'INSERT INTO {{table}} ({{columns}}) VALUES ({{values}});';
+
+// Replace với data
+const result = replacePlaceholders(template, {
+  table: 'Users',
+  columns: 'Name, Email',
+  values: "'John', 'john@email.com'",
+});
 ```
-Pages (UI Layer)
-    ↓
-Features (Business Logic)
-    ↓
-Services (API Layer)
-    ↓
-Models (Data Types)
-```
-
-### 3. Component Structure
-
-- **Layout Components**: AdminLayout, Sidebar
-- **UI Components**: Reusable components (Button, Dialog, Table)
-- **Feature Components**: Specific to business logic
-- **Page Components**: Top-level page components
 
 ## 🔧 Cài đặt và chạy dự án
 
 ### Yêu cầu hệ thống
 
 - Node.js >= 18
-- npm hoặc yarn
+- npm hoặc yarn hoặc bun
 
 ### Cài đặt dependencies
 
@@ -127,167 +123,183 @@ npm install
 npm run dev
 ```
 
+Truy cập: http://localhost:3000
+
 ### Build cho production
 
 ```bash
 npm run build
 ```
 
-### Linting và formatting
+### Preview production build
 
 ```bash
-npm run lint
+npm run preview
 ```
 
-## 📱 Tính năng chính
+## 📱 Generators hiện có
 
-### 1. User Management
+### 1. SQL Notification Generator ✅
 
-- ✅ Hiển thị danh sách users với pagination
-- ✅ Tạo user mới
-- ✅ Chỉnh sửa thông tin user
-- ✅ Kích hoạt/vô hiệu hóa user
-- ✅ Gán roles cho user
-- ✅ Validation form với Zod
+Generate SQL INSERT statements cho hệ thống notification với hỗ trợ đa ngôn ngữ (vi-VN, en-US).
 
-### 2. Role Management
+**Features:**
 
-- ✅ Hiển thị danh sách roles với pagination
-- ✅ Tạo role mới
-- ✅ Chỉnh sửa role
-- ✅ Xóa role
-- ✅ Quản lý trạng thái Active/Inactive
+- Multi-language support (Vietnamese, English)
+- 12 notification types: System, Payment, Transfer, Transaction, Account, Security, Marketing, General, Funding, Warning, ForAdmin, KYC
+- Auto-generate notification keys
+- SQL template với placeholders
 
-### 3. Authentication
+**Usage:**
 
-- ✅ Context-based authentication
-- ✅ Token management
-- ✅ Protected routes
-- ✅ Login/logout functionality
+1. Nhập Base Key (e.g., `notification.merchant.assigned`)
+2. Chọn Type (0-11)
+3. Nhập Title và Body (Vietnamese và English)
+4. Click "Generate SQL"
+5. Copy hoặc Download kết quả
 
-### 4. UI/UX Features
+### 2. SQL Merchant Generator 🚧
 
-- ✅ Responsive design
-- ✅ Dark/Light theme support
-- ✅ Toast notifications
-- ✅ Loading states
-- ✅ Error handling
-- ✅ Confirmation dialogs
+Generate SQL statements cho merchant management (Coming Soon)
 
-## 🎨 Design System
+### 3. SQL Configuration Generator 🚧
 
-### Color Palette
+Generate SQL statements cho application configuration (Coming Soon)
 
-- Primary colors được định nghĩa trong Tailwind config
-- Consistent color usage across components
-- Dark mode support
+### 4. Text Generators 🚧
 
-### Typography
+- Email Template Generator
+- Message Template Generator (SMS, Push, In-App, WhatsApp)
 
-- Font system với các variant khác nhau
-- Consistent text sizing và spacing
+### 5. Migration Generators 🚧
 
-### Components
+- .NET Migration Generator
+- Database Migration Generator (PostgreSQL, MySQL, MSSQL, SQLite)
 
-- Reusable UI components với variants
-- Consistent spacing và styling
-- Accessibility support
+## 🎨 UI Components
 
-## 🔌 API Integration
+### Shared Components
 
-### Service Layer Pattern
+- **ScriptLayout**: Main layout với sidebar và content area
+- **ScriptSidebar**: Navigation sidebar với categories
+- **CodePreview**: Preview code với syntax highlighting, copy và download buttons
+- **ActionButtons**: Reusable action buttons
 
-Mỗi feature có service class riêng để handle API calls:
+### UI Library (Shadcn)
 
-- `UserService`: User-related API operations
-- `RoleService`: Role-related API operations
-- `AuthService`: Authentication API operations
-
-### API Client
-
-- Axios-based API client với interceptors
-- Error handling và response transformation
-- Type-safe API calls
+- Button, Input, Form, Label
+- Dialog, Checkbox, Table
+- Typography variants
+- Loading states
 
 ## 🧪 Code Quality
 
 ### TypeScript
 
-- Strict type checking
-- Interface definitions cho tất cả data models
-- Type-safe API calls và component props
+- Strict type checking enabled
+- Type-safe forms với Zod inference
+- Interface definitions cho templates và data models
 
-### Linting & Formatting
+### Project Standards
 
-- ESLint configuration
-- Prettier integration
-- Git hooks với Husky
+- Feature-based organization
+- Reusable shared components
+- Type-safe validation schemas
+- Clean component composition
+
+## 🚀 Thêm Generator mới
+
+### 1. Tạo feature folder
+
+```
+src/features/[category]/[generator-name]/
+```
+
+### 2. Tạo các files cần thiết
+
+```typescript
+// schema.ts - Zod validation schema
+export const mySchema = z.object({
+  field1: z.string(),
+  field2: z.number(),
+});
+
+export type MyFormData = z.infer<typeof mySchema>;
+
+// templates.ts - Template definitions
+export const myTemplates: Template[] = [
+  {
+    key: 'TEMPLATE_KEY',
+    language: 'sql',
+    template: `-- Template content with {{placeholders}}`,
+  },
+];
+
+// service.ts - Generate logic
+export function generateMyScript(data: MyFormData): GeneratorResult {
+  return generateFromTemplates(myTemplates, {
+    baseKey: data.someKey,
+    additionalParams: { ...data },
+  });
+}
+
+// MyGenerator.tsx - Component
+export function MyGenerator() {
+  // Form setup, validation, và UI
+}
+```
+
+### 3. Thêm route
+
+Cập nhật `src/router/index.tsx`:
+
+```typescript
+{
+  path: 'category/generator-name',
+  element: <MyGenerator />,
+}
+```
+
+### 4. Cập nhật sidebar
+
+Cập nhật `src/shared/components/ScriptSidebar.tsx` để thêm link mới.
+
+## 📚 Hướng dẫn cho Developer
+
+### Setup môi trường
+
+1. Clone repository
+2. Install dependencies: `npm install`
+3. Run dev server: `npm run dev`
+4. Mở http://localhost:3000
+
+### Development Workflow
+
+1. Tạo feature branch từ main
+2. Develop generator theo cấu trúc feature-based
+3. Test thoroughly với form validation
+4. Submit pull request
 
 ### Best Practices
 
-- Component composition
-- Custom hooks cho business logic
-- Separation of concerns
-- Error boundaries
-
-## 🚀 Deployment
-
-### Build Process
-
-```bash
-npm run build
-```
-
-### Environment Variables
-
-Tạo file `.env` với các biến môi trường cần thiết:
-
-```
-VITE_API_BASE_URL=your_api_url
-VITE_APP_NAME=Admin Dashboard
-```
-
-## 📚 Hướng dẫn cho Developer mới
-
-### 1. Setup môi trường
-
-1. Clone repository
-2. Cài đặt dependencies: `npm install`
-3. Chạy dev server: `npm run dev`
-
-### 2. Hiểu cấu trúc code
-
-1. Đọc file này (README.md)
-2. Xem cấu trúc folder trong `src/`
-3. Kiểm tra `package.json` để hiểu dependencies
-
-### 3. Thêm tính năng mới
-
-1. Tạo feature folder trong `src/features/`
-2. Tạo components, hooks, schema
-3. Thêm service class trong `src/services/`
-4. Định nghĩa types trong `src/models/`
-5. Tạo page component trong `src/pages/`
-
-### 4. Coding Standards
-
 - Sử dụng TypeScript cho tất cả files
-- Follow naming conventions
-- Viết comments cho complex logic
-- Sử dụng custom hooks cho business logic
-- Component composition over inheritance
+- Validate input với Zod schemas
+- Reuse shared components khi có thể
+- Follow naming conventions (PascalCase cho components, camelCase cho functions)
+- Write descriptive comments cho complex logic
 
 ## 🤝 Contributing
 
 1. Fork repository
-2. Tạo feature branch
-3. Commit changes với conventional commits
-4. Push và tạo Pull Request
+2. Create feature branch
+3. Commit changes
+4. Push và create Pull Request
 
 ## 📄 License
 
-MIT License - xem file LICENSE để biết thêm chi tiết.
+MIT License
 
 ---
 
-Sabo
+**Project Status**: In Development 🚧  
+**Last Updated**: December 31, 2025
