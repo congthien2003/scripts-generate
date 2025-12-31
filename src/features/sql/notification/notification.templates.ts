@@ -11,7 +11,7 @@ export const notificationTemplates: Template[] = [
     language: null,
     template: `-- Insert main notification
 INSERT INTO notification_messages (notification_key, type, created_at, updated_at)
-VALUES ('{{key}}', '{{type}}', NOW(), NOW());`,
+VALUES ('{{key}}', {{type}}, NOW(), NOW());`,
   },
 
   // Vietnamese title

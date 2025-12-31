@@ -8,7 +8,7 @@ export const notificationSchema = z.object({
       /^[a-z0-9._-]+$/,
       'Key must contain only lowercase letters, numbers, dots, underscores, and hyphens'
     ),
-  type: z.enum(['event', 'alert', 'system']).default('event'),
+  type: z.number().int().min(0).max(11),
   titleVi: z.string().optional(),
   bodyVi: z.string().optional(),
   titleEn: z.string().optional(),

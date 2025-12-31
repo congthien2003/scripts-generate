@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,7 @@ export function NotificationGenerator() {
     resolver: zodResolver(notificationSchema),
     defaultValues: {
       baseKey: '',
-      type: 'event',
+      type: 0,
       titleVi: '',
       bodyVi: '',
       titleEn: '',
@@ -96,11 +96,24 @@ export function NotificationGenerator() {
                       <FormControl>
                         <select
                           {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          value={field.value}
                           className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         >
-                          <option value="event">Event</option>
-                          <option value="alert">Alert</option>
-                          <option value="system">System</option>
+                          <option value="0">System</option>
+                          <option value="1">Payment</option>
+                          <option value="2">Transfer</option>
+                          <option value="3">Transaction</option>
+                          <option value="4">Account</option>
+                          <option value="5">Security</option>
+                          <option value="6">Marketing</option>
+                          <option value="7">General</option>
+                          <option value="8">Funding</option>
+                          <option value="9">Warning</option>
+                          <option value="10">ForAdmin</option>
+                          <option value="11">KYC</option>
                         </select>
                       </FormControl>
                       <FormDescription>Notification type</FormDescription>
