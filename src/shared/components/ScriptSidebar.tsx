@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Menu, FileCode, Database } from 'lucide-react';
+import { Menu, FileCode, Database, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -22,6 +22,12 @@ const navCategories: NavCategory[] = [
     icon: Database,
     href: '/sql',
     subItems: [{ name: 'Notification', href: '/sql/notification' }],
+  },
+  {
+    name: 'Prompt Generators',
+    icon: Sparkles,
+    href: '/prompt',
+    subItems: [{ name: 'Improve SQL', href: '/prompt/improve-sql' }],
   },
 ];
 

@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import ErrorPage from '@/pages/error/ErrorPage';
 import { ScriptLayout } from '@/shared/components/ScriptLayout';
 import { NotificationGenerator } from '@/features/sql/notification/NotificationGenerator';
+import { ImproveSqlGenerator } from '@/features/prompt/improve-sql/ImproveSqlGenerator';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,11 @@ const router = createBrowserRouter([
       {
         path: 'sql/notification',
         element: <NotificationGenerator />,
+      },
+      // Prompt Generators
+      {
+        path: 'prompt/improve-sql',
+        element: <ImproveSqlGenerator />,
       },
     ],
   },
