@@ -27,7 +27,10 @@ const navCategories: NavCategory[] = [
     name: 'Prompt Generators',
     icon: Sparkles,
     href: '/prompt',
-    subItems: [{ name: 'Improve SQL', href: '/prompt/improve-sql' }],
+    subItems: [
+      { name: 'Improve SQL', href: '/prompt/improve-sql' },
+      { name: 'Comment SQL', href: '/prompt/comment-sql' },
+    ],
   },
 ];
 
