@@ -3,6 +3,7 @@ import ErrorPage from '@/pages/error/ErrorPage';
 import { ScriptLayout } from '@/shared/components/ScriptLayout';
 import { NotificationGenerator } from '@/features/sql/notification/NotificationGenerator';
 import { ImproveSqlGenerator } from '@/features/prompt/improve-sql/ImproveSqlGenerator';
+import { CommentSqlGenerator } from '@/features/prompt/comment-sql/CommentSqlGenerator';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: 'prompt/improve-sql',
         element: <ImproveSqlGenerator />,
+      },
+      {
+        path: 'prompt/comment-sql',
+        element: <CommentSqlGenerator />,
       },
     ],
   },
