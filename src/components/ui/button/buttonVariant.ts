@@ -4,7 +4,8 @@ export type ButtonVariants =
   | 'outline'
   | 'secondary'
   | 'ghost'
-  | 'link';
+  | 'link'
+  | 'gradient';
 export type ButtonSizes = 'default' | 'sm' | 'lg' | 'icon';
 
 export const ButtonSizesClass: Record<ButtonSizes, string> = {
@@ -24,4 +25,6 @@ export const ButtonVariantClass: Record<ButtonVariants, string> = {
     'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
   ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
   link: 'text-primary underline-offset-4 hover:underline',
+  gradient:
+    'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg hover:shadow-purple-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 dark:from-purple-500 dark:to-blue-500',
 };
