@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Menu, FileCode, Database, Sparkles } from 'lucide-react';
+import { Menu, FileCode, Database, Sparkles, ChevronRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -56,8 +56,8 @@ export function ScriptSidebar() {
       {/* Mobile overlay */}
       <div
         className={cn(
-          'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm lg:hidden',
-          isOpen ? 'block' : 'hidden'
+          'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm lg:hidden transition-opacity duration-300',
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         onClick={toggle}
       />
@@ -65,17 +65,30 @@ export function ScriptSidebar() {
       {/* Sidebar */}
       <div
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-72 bg-background',
+          'fixed inset-y-0 left-0 z-50 w-72',
+          'bg-background/80 backdrop-blur-xl',
           'transition-transform duration-300 ease-in-out',
-          'border-r',
+          'border-r border-border/50',
           isOpen ? 'translate-x-0' : '-translate-x-full',
           'lg:translate-x-0'
         )}
       >
+        {/* Gradient accent line */}
+        <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-purple-500/50 via-blue-500/30 to-transparent" />
+
         {/* Header */}
-        <div className="flex h-14 items-center border-b px-4">
-          <FileCode className="h-6 w-6 mr-2" />
-          <span className="text-lg font-semibold">Script Generator</span>
+        <div className="flex h-16 items-center border-b border-border/50 px-4">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg blur opacity-50" />
+              <div className="relative bg-gradient-to-br from-purple-500 to-blue-500 p-2 rounded-lg animate-float">
+                <FileCode className="h-5 w-5 text-white" />
+              </div>
+            </div>
+            <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent">
+              Script Generator
+            </span>
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -87,66 +100,96 @@ export function ScriptSidebar() {
         </div>
 
         {/* Navigation */}
-        <div className="flex flex-col h-[calc(100vh-3.5rem)]">
+        <div className="flex flex-col h-[calc(100vh-4rem)]">
           <div className="flex-1 overflow-auto py-4">
-            <nav className="grid gap-2 px-2">
-              {navCategories.map((category) => (
-                <div key={category.href} className="space-y-1">
+            <nav className="grid gap-1 px-3">
+              {navCategories.map((category, categoryIndex) => (
+                <div
+                  key={category.href}
+                  className="space-y-1 animate-slide-up"
+                  style={{ animationDelay: `${categoryIndex * 0.1}s` }}
+                >
                   {/* Category Header */}
                   <button
                     onClick={() => toggleCategory(category.href)}
                     className={cn(
-                      'w-full flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold',
-                      'hover:bg-accent hover:text-accent-foreground transition-colors',
+                      'group w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold',
+                      'hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-blue-500/10',
+                      'transition-all duration-300',
                       'text-foreground'
                     )}
                   >
-                    <category.icon className="h-5 w-5" />
-                    <span className="flex-1 text-left">{category.name}</span>
-                    <svg
+                    <div
                       className={cn(
-                        'h-4 w-4 transition-transform',
-                        expandedCategories.includes(category.href)
-                          ? 'rotate-90'
-                          : ''
+                        'p-1.5 rounded-lg transition-all duration-300',
+                        'bg-muted group-hover:bg-gradient-to-br group-hover:from-purple-500/20 group-hover:to-blue-500/20'
                       )}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
+                      <category.icon className="h-4 w-4 text-muted-foreground group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors" />
+                    </div>
+                    <span className="flex-1 text-left">{category.name}</span>
+                    <ChevronRight
+                      className={cn(
+                        'h-4 w-4 text-muted-foreground transition-transform duration-300',
+                        expandedCategories.includes(category.href) &&
+                          'rotate-90'
+                      )}
+                    />
                   </button>
 
                   {/* Sub Items */}
-                  {expandedCategories.includes(category.href) &&
-                    category.subItems && (
-                      <div className="ml-4 space-y-1 border-l pl-3">
-                        {category.subItems.map((item) => (
-                          <Link
-                            key={item.href}
-                            to={item.href}
-                            className={cn(
-                              'block rounded-md px-3 py-2 text-sm',
-                              'hover:bg-accent hover:text-accent-foreground transition-colors',
-                              location.pathname === item.href
-                                ? 'bg-accent text-accent-foreground font-medium'
-                                : 'text-muted-foreground'
-                            )}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
+                  <div
+                    className={cn(
+                      'overflow-hidden transition-all duration-300',
+                      expandedCategories.includes(category.href)
+                        ? 'max-h-96 opacity-100'
+                        : 'max-h-0 opacity-0'
+                    )}
+                  >
+                    {category.subItems && (
+                      <div className="ml-4 space-y-1 border-l-2 border-border/50 pl-3 py-1">
+                        {category.subItems.map((item, itemIndex) => {
+                          const isActive = location.pathname === item.href;
+                          return (
+                            <Link
+                              key={item.href}
+                              to={item.href}
+                              className={cn(
+                                'block rounded-lg px-3 py-2 text-sm transition-all duration-200',
+                                isActive
+                                  ? 'bg-gradient-to-r from-purple-500/15 to-blue-500/15 text-foreground font-medium shadow-sm'
+                                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
+                                'animate-slide-in-left'
+                              )}
+                              style={{
+                                animationDelay: `${categoryIndex * 0.1 + itemIndex * 0.05 + 0.1}s`,
+                              }}
+                            >
+                              <div className="flex items-center gap-2">
+                                {isActive && (
+                                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-blue-500" />
+                                )}
+                                {item.name}
+                              </div>
+                            </Link>
+                          );
+                        })}
                       </div>
                     )}
+                  </div>
                 </div>
               ))}
             </nav>
+          </div>
+
+          {/* Footer */}
+          <div className="border-t border-border/50 p-4">
+            <div className="text-xs text-muted-foreground text-center">
+              <span className="opacity-60">Powered by</span>{' '}
+              <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent">
+                React + Vite
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -155,7 +198,11 @@ export function ScriptSidebar() {
       <Button
         variant="outline"
         size="icon"
-        className="fixed bottom-4 right-4 z-40 lg:hidden"
+        className={cn(
+          'fixed bottom-4 right-4 z-40 lg:hidden',
+          'bg-background/80 backdrop-blur-sm',
+          'shadow-lg hover:shadow-xl transition-shadow'
+        )}
         onClick={toggle}
       >
         <Menu className="h-5 w-5" />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Copy, Download, Check } from 'lucide-react';
+import { Copy, Download, Check, Code2 } from 'lucide-react';
 import { copyToClipboard, downloadAsFile } from '../lib/template-engine';
 import { cn } from '@/lib/utils';
 
@@ -31,32 +31,48 @@ export function CodePreview({
   };
 
   return (
-    <div className={cn('rounded-lg border bg-card', className)}>
+    <div
+      className={cn(
+        'rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-sm',
+        className
+      )}
+    >
       {/* Header */}
-      <div className="flex items-center justify-between border-b px-4 py-3">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Preview</span>
+      <div className="flex items-center justify-between border-b border-border/50 px-4 py-3 bg-gradient-to-r from-purple-500/5 to-blue-500/5">
+        <div className="flex items-center gap-3">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-red-400/80" />
+            <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
+            <div className="w-3 h-3 rounded-full bg-green-400/80" />
+          </div>
+          <span className="text-sm font-medium text-muted-foreground">
+            Preview
+          </span>
           {language && (
-            <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="rounded-md bg-gradient-to-r from-purple-500/10 to-blue-500/10 px-2 py-0.5 text-xs font-medium text-purple-600 dark:text-purple-400 border border-purple-500/20">
               {language.toUpperCase()}
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleCopy}
-            className="h-8"
+            disabled={!code}
+            className={cn(
+              'h-8 px-3 transition-all duration-200',
+              copied && 'text-green-600 dark:text-green-400'
+            )}
           >
             {copied ? (
               <>
-                <Check className="h-4 w-4 mr-1" />
-                Copied
+                <Check className="h-4 w-4 mr-1.5" />
+                Copied!
               </>
             ) : (
               <>
-                <Copy className="h-4 w-4 mr-1" />
+                <Copy className="h-4 w-4 mr-1.5" />
                 Copy
               </>
             )}
@@ -65,9 +81,10 @@ export function CodePreview({
             variant="ghost"
             size="sm"
             onClick={handleDownload}
-            className="h-8"
+            disabled={!code}
+            className="h-8 px-3"
           >
-            <Download className="h-4 w-4 mr-1" />
+            <Download className="h-4 w-4 mr-1.5" />
             Download
           </Button>
         </div>
@@ -76,17 +93,18 @@ export function CodePreview({
       {/* Code Content */}
       <div className="relative">
         {code ? (
-          <pre className="overflow-x-auto p-4 text-sm">
-            <code className="text-foreground">{code}</code>
+          <pre className="overflow-x-auto p-4 text-sm max-h-[500px] overflow-y-auto">
+            <code className="text-foreground font-mono">{code}</code>
           </pre>
         ) : (
-          <div className="flex items-center justify-center p-12 text-muted-foreground">
-            <div className="text-center">
-              <p className="text-sm">No code generated yet</p>
-              <p className="mt-1 text-xs">
-                Fill in the form and click generate
-              </p>
+          <div className="flex flex-col items-center justify-center p-16 text-muted-foreground">
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/10 mb-4">
+              <Code2 className="h-8 w-8 text-purple-500/50" />
             </div>
+            <p className="text-sm font-medium">No code generated yet</p>
+            <p className="mt-1.5 text-xs text-muted-foreground/70">
+              Fill in the form and click generate
+            </p>
           </div>
         )}
       </div>
